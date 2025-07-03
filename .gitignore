@@ -1,0 +1,73 @@
+# Build Folders
+bin/
+obj/
+
+# User-Specific Files
+*.user
+*.rsuser
+*.suo
+*.pdb
+
+# IDE Directories
+.vscode/
+.idea/
+.vs/
+
+# Logs
+*.log
+logs/
+
+# Temporary Files
+*.tmp
+*.temp
+*.cache
+*.config
+*.log
+*.vspscc
+
+# Generated Files
+*.dll
+*.exe
+*.manifest
+*.nupkg
+*.msi
+*.db
+
+# ASP.NET Core Generated Files
+*.dbmdl
+*.jfm
+
+# Rider
+.idea/
+
+# Visual Studio Code
+.vscode/
+
+# Visual Studio temporary files, build results, and
+# user-specific files
+.DS_Store
+*.user
+*.rsuser
+*.suo
+*.userprefs
+*.sqlproj.user
+*.sln.docstates
+
+# Azure DevOps
+/.vs/
+
+# Tye
+tye.yaml
+
+# JetBrains Rider
+.idea/
+
+# NuGet Packages
+*.nupkg
+*.snupkg
+
+# Coverage Reports
+coverage/
+
+# Entity Framework Core Migrations
+Migrations/

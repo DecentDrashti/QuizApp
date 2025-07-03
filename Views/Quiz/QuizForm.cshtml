@@ -1,0 +1,77 @@
+﻿@using QuizManagement.Models
+@model QuizModel
+<main id="main" class="main">
+    <section class="section">
+        @* <div class="row"> *@
+        @*   <div class="col-lg-6"> *@
+
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Quiz Form</h5>
+
+                <!-- Vertical Form -->
+                <form class="row " asp-controller="Quiz" asp-action="QuizAddEdit" method="post">
+
+                    @* Hidden CountryID field *@
+                    @* ADD THIS! *@
+                    <input type="hidden" asp-for="QuizID" />
+
+                    <div class="col-12">
+                        <label for="inputName4" class="form-label">QuizName</label>
+                        <input type="text" class="form-control" id="inputNanme4" asp-for="QuizName">
+                        <span asp-validation-for="QuizName" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-12">
+                        <label for="inputName4" class="form-label">TotalQuestions</label>
+                        <input type="text" class="form-control" id="inputNanme4" asp-for="TotalQuestions">
+                        <span asp-validation-for="TotalQuestions" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-12">
+                        <label for="inputName4" class="form-label">QuizDate</label>
+                        <input type="date" class="form-control" id="inputNanme4" asp-for="QuizDate">
+                        <span asp-validation-for="QuizDate" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-12">
+                        <label for="inputID" class="form-label">UserID</label>
+                        <select class="form-control" asp-for="UserID">
+                            <option value="">Select User</option>
+                            @foreach (var user in ViewBag.UserList)
+                            {
+                                <option value="@user.UserID">@user.UserName</option>
+                            }
+                        </select>
+                        <span asp-validation-for="UserID" class="text-danger"></span>
+                    </div>
+
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-primary" onclick="showSuccessAndSubmit()">Save</button>
+                        <button type="reset" class="btn btn-secondary">Cancel</button>
+                    </div>
+                </form><!-- Vertical Form -->
+
+            </div>
+        </div>
+
+    </section>
+    <script>
+        //add..
+                function showSuccessAndSubmit() {
+            Swal.fire({
+                position: 'top-end',
+                icon: 'success',
+                title: 'Your work has been saved',
+                showConfirmButton: false,
+                timer: 3000
+            });
+
+            // Delay form submission until after the toast (optional)
+            setTimeout(() => {
+                document.getElementById('addForm').submit();
+            }, 3000); // Matches the timer duration
+        }
+    </script>
+</main>
+

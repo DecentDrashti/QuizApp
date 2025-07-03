@@ -1,0 +1,182 @@
+﻿@using System.Data
+<main id="main" class="main">
+    <section class="section">
+        <div class="row">
+            <div class="col-lg-12">
+
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Quiz List</h5>
+                        <p>Your Quiz List Here click on the add button to add more and click on edit button beside to edit any list </p>
+
+                        <span class="text-danger">@TempData["ErrorMessage"]</span>
+
+                        <a asp-controller="Quiz" asp-action="QuizForm" class="btn btn-outline-primary btn-sm" style="padding: 2px 6px; font-size: 20px; justify-content:center;">
+                            ADD <i class="bi bi-database-fill-add"></i>
+                        </a>
+
+                        @* <a asp-controller="Quiz" asp-action="QuizExportToExcel" class="btn btn-outline-success btn-sm" style="padding: 2px 6px; font-size: 20px; justify-content:end;"> *@
+                        @*     Export to Excel <i class="bi bi-file-earmark-fill"></i> *@
+                        @* </a> *@
+
+                        <!-- Export Button -->
+                        <button class="btn btn-outline-success" onclick="exportToExcel()">Export to Excel<i class="bi bi-file-earmark-fill"></i></button>
+
+                        <!-- Toast Container -->
+                        <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+                            <!-- Download Started Toast -->
+                            <div id="exportStartedToast" class="toast align-items-center text-white bg-primary border-0 mb-2" role="alert">
+                                <div class="d-flex">
+                                    <div class="toast-body">
+                                        📥 <strong>Download started!</strong> Preparing your Excel file...
+                                    </div>
+                                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+                                </div>
+                            </div>
+
+                            <!-- Download Complete Toast -->
+                            <div id="exportCompletedToast" class="toast align-items-center text-white bg-success border-0" role="alert">
+                                <div class="d-flex">
+                                    <div class="toast-body">
+                                        ✅ <strong>Download complete!</strong> Your Excel file has been downloaded.
+                                    </div>
+                                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="table-responsive">
+                            <!-- Table with stripped rows -->
+                            <table class="table datatable">
+                                <thead>
+                                    <tr>
+                                        <th>QuizID</th>
+                                        <th>QuizName</th>
+                                        <th>TotalQuestions</th>
+                                        <th>QuizDate</th>
+                                        <th>UserID</th>
+                                        <th data-type="date" data-format="YYYY/DD/MM">Created</th>
+                                        <th data-type="date" data-format="YYYY/DD/MM">Modified</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (DataRow dataRow in Model.Rows)
+                                    {
+                                        <tr>
+                                            <td>@dataRow["QuizID"]</td>
+                                            <td>@dataRow["QuizName"]</td>
+                                            <td>@dataRow["TotalQuestions"]</td>
+                                            <td>@dataRow["QuizDate"]</td>
+                                            <td>@dataRow["UserID"]</td>
+                                            <td>@dataRow["Created"]</td>
+                                            <td>@dataRow["Modified"]</td>
+                                            <td>
+                                                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                                                    <a asp-controller="Quiz" asp-action="QuizForm" asp-route-QuizID="@dataRow["QuizID"]" class="btn btn-outline-warning  me-md-2">
+                                                       Edit<i class="bi bi-pencil-square"></i>
+                                                    </a>
+
+                                                    <form id="deleteForm-@dataRow["QuizID"]" method="post" asp-controller="Quiz" asp-action="QuizDelete">
+                                                        <input type="hidden" name="QuizID" value="@dataRow["QuizID"]" />
+                                                        <button type="button" class="btn btn-outline-danger btn-xs" onclick="confirmDelete(@dataRow["QuizID"])">
+                                                           Delete<i class="bi bi-trash3-fill"></i>
+                                                        </button>
+                                                    </form>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        //export to excel..
+
+                        async function exportToExcel() {
+            // Show "Download Started" toast for 5 seconds
+            const startedToastElement = document.getElementById('exportStartedToast');
+            const startedToast = new bootstrap.Toast(startedToastElement, { delay: 3000 });
+            startedToast.show();
+
+            try {
+                const response = await fetch('/Quiz/QuizExportToExcel', {
+                    method: 'POST'
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to download');
+                }
+
+                const blob = await response.blob();
+                const downloadUrl = window.URL.createObjectURL(blob);
+
+                const link = document.createElement('a');
+                link.href = downloadUrl;
+
+                // Optional: Get filename from Content-Disposition header
+                let fileName = "QuizExport.xlsx";
+                const disposition = response.headers.get('Content-Disposition');
+                if (disposition && disposition.indexOf('filename=') !== -1) {
+                    const matches = disposition.match(/filename="?([^"]+)"?/);
+                    if (matches.length > 1) fileName = matches[1];
+                }
+
+                link.download = fileName;
+                document.body.appendChild(link);
+                link.click();
+                link.remove();
+
+                // Wait for the first toast to close before showing complete message
+                setTimeout(() => {
+                    const completedToastElement = document.getElementById('exportCompletedToast');
+                    const completedToast = new bootstrap.Toast(completedToastElement, { delay: 3000 });
+                    completedToast.show();
+                }, 3000); // Wait until "started" toast duration completes (5 sec)
+
+            } catch (error) {
+                console.error('Download error:', error);
+                startedToast.hide();
+
+                // Show an error message if you want (optional)
+                alert('An error occurred while exporting.');
+            }
+        }
+    
+
+        //delete..
+                function confirmDelete(quizID) {
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Yes, delete it!',
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Submit the form
+                    document.getElementById(`deleteForm-${quizID}`).submit();
+                } else if (result.dismiss === Swal.DismissReason.cancel) {
+                    Swal.fire(
+                        'Cancelled',
+                        'Your quiz is safe 🙂',
+                        'info'
+                    );
+                }
+            });
+        }
+
+    </script>
+</main>

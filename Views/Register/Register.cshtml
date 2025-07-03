@@ -1,0 +1,103 @@
+﻿@{
+    Layout = "~/Views/Shared/_Login_Layout.cshtml";
+}
+
+@model UserModel
+
+<main>
+    <div class="container">
+        @if (TempData["ErrorMessage"] != null)
+        {
+            <div class="alert alert-danger" role="alert">
+                @TempData["ErrorMessage"]
+            </div>
+        }
+        <section class="section register min-vh-100 d-flex flex-column align-items-center justify-content-center py-4">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-lg-4 col-md-6 d-flex flex-column align-items-center justify-content-center">
+
+                        <div class="d-flex justify-content-center py-4">
+                            <a class="logo d-flex align-items-center w-auto">
+                                <img src="~/image/Logo.png" alt="">
+                                <span class="d-none d-lg-block">Quiz Management</span>
+                            </a>
+                        </div><!-- End Logo -->
+
+                        <div class="card mb-3">
+
+                            <div class="card-body">
+
+                                <div class="pt-4 pb-2">
+                                    <h5 class="card-title text-center pb-0 fs-4">Register To Our Quiz Portal</h5>
+                                    <p class="text-center small">Enter your details</p>
+                                </div>
+
+                                <form class="row g-3 needs-validation" asp-action="UserRegister" asp-controller="Register">
+
+                                    <div class="col-12">
+                                        <label for="inputName4" class="form-label">UserName</label>
+                                        <input type="text" class="form-control" id="inputName4" asp-for="UserName">
+                                        <span asp-validation-for="UserName" class="text-danger"></span>
+                                    </div>
+
+                                    <div class="col-12">
+                                        <label for="inputPassword3" class="form-label">Password</label>
+                                        <input type="password" class="form-control" id="inputPassword" asp-for="Password">
+                                        <span asp-validation-for="Password" class="text-danger"></span>
+                                        
+                                    </div>
+
+                                    <div class="col-12">
+                                        <label for="number" class="form-label">Mobile</label>
+                                        <input type="text" class="form-control" id="inputName4" asp-for="Mobile">
+                                        <span asp-validation-for="Mobile" class="text-danger"></span>
+                                    </div>
+
+                                    <div class="col-12">
+                                        <label for="inputEmail3" class="col-sm-2 col-form-label">Email</label>
+                                        <input type="email" class="form-control" id="inputEmail" asp-for="Email">
+                                        <span asp-validation-for="Email" class="text-danger"></span>
+                                    </div>
+
+                                    <div class="col-12">
+                                        <button class="btn btn-primary w-100" type="submit" onclick="showSuccessAndSubmit()">Register</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+    <script>
+        //add..
+                function showSuccessAndSubmit() {
+            Swal.fire({
+                position: 'top-end',
+                icon: 'success',
+                title: 'Your work has been saved',
+                showConfirmButton: false,
+                timer: 3000
+            });
+
+            // Delay form submission until after the toast (optional)
+            setTimeout(() => {
+                document.getElementById('addForm').submit();
+            }, 3000); // Matches the timer duration
+        }
+    </script>
+</main><!-- End #main -->
+@* @section Scripts {
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js"></script>
+}
+
+<!-- OR -->
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+} *@
