@@ -44,10 +44,10 @@ The **Quiz Management System** is a full-featured web application developed usin
 
 ## 🗂 Database Schema (Overview)
 
-- **MST_User** – user accounts and roles  
-- **MST_Question** – questions with options and correct answer  
-- **MST_Quiz** – quiz info (name, date, total questions)  
-- **MST_QuestionLevel** – difficulty levels  
-- **MST_QuizWiseQuestions** – mapping of questions to quizzes  
+- **User** – user accounts and roles  
+- **Question** – questions with options and correct answer  
+- **Quiz** – quiz info (name, date, total questions)  
+- **QuestionLevel** – difficulty levels  
+- **QuizWiseQuestions** – mapping of questions to quizzes  
 
 ---
