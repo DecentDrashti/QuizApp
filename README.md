@@ -1,4 +1,3 @@
-### PROJECT: QUIZ MANAGEMENT SYSTEM
 # 📚 Quiz Management System - ASP.NET Core MVC
 
 The **Quiz Management System** is a full-featured web application developed using **ASP.NET Core MVC**, designed to manage quizzes, questions, question levels, and user access. It includes a dynamic admin dashboard, user authentication, and export functionality for all data listings.
