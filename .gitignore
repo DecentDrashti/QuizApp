@@ -52,7 +52,6 @@ logs/
 *.userprefs
 *.sqlproj.user
 *.sln.docstates
-*.appsettings.Development.json
 
 # Azure DevOps
 /.vs/
